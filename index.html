@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MTO 1-26 Davomati</title>
+  
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="MTO 1-26">
+  <link rel="theme-color" content="#2563eb">
+  
+  <link rel="shortcut icon" href="https://img.icons8.com/fluency/48/checked-user-male.png">
+  <link rel="manifest" href="data:application/manifest+json,{%22name%22:%22MTO%201-26%20Davomati%22,%22short_name%22:%22MTO%201-26%22,%22start_url%22:%22.%22,%22display%22:%22standalone%22,%22background_color%22:%22%23f3f4f6%22,%22theme_color%22:%22%232563eb%22,%22icons%22:[{%22src%22:%22https://img.icons8.com/fluency/144/checked-user-male.png%22,%22sizes%22:%22144x144%22,%22type%22:%22image/png%22}]}">
+
+  <style>
+    :root { background: #f3f4f6; color: #1f2937; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
+    body { padding: 20px; display: flex; justify-content: center; }
+    .app { background: #ffffff; padding: 24px; border-radius: 12px; max-width: 500px; width: 100%; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+    h1 { font-size: 20px; margin-bottom: 6px; text-align: center; color: #2563eb; }
+    .group-subtitle { font-size: 14px; text-align: center; color: #6b7280; margin-bottom: 20px; font-weight: bold; }
+    .form-group { margin-bottom: 16px; }
+    label { display: block; font-size: 14px; font-weight: bold; margin-bottom: 6px; }
+    select { width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 15px; background: #fff; }
+    .photo-box { width: 100%; height: 220px; background: #e5e7eb; border: 2px dashed #9ca3af; border-radius: 8px; margin: 15px 0; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .photo-preview { width: 100%; height: 100%; object-fit: cover; display: none; }
+    .file-input { display: none; }
+    button { width: 100%; padding: 12px; border: none; border-radius: 6px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.2s; margin-top: 10px; }
+    .btn-blue { background: #2563eb; color: #fff; }
+    .btn-green { background: #16a34a; color: #fff; }
+    button:disabled { background: #9ca3af; cursor: not-allowed; }
+    .status-badge { font-size: 13px; padding: 8px; border-radius: 4px; background: #e5e7eb; text-align: center; margin-top: 5px; font-weight: bold; }
+    .pwa-btn { background: #ff9800; color: white; display: none; margin-bottom: 15px; }
+  </style>
+</head>
+<body>
+
+<div class="app">
+  <button type="button" class="pwa-btn" id="install-pwa-btn" onclick="triggerPWAInstall()">📲 Ilovani telefonga o'rnatish</button>
+
+  <h1>1-son Texnikum Davomati</h1>
+  <div class="group-subtitle">Guruh: MTO 1-26</div>
+  
+  <div class="form-group">
+    <label>Talaba F.I.Sh.</label>
+    <select id="student-name" onchange="checkForm()">
+      <option value="">F.I.Sh. tanlang...</option>
+      <option value="Abduqodirov Salmon Inomjon o‘g‘li">Abduqodirov Salmon Inomjon o‘g‘li</option>
+      <option value="Abdurahmonov Behruzjon Bahromboy o‘g‘li">Abdurahmonov Behruzjon Bahromboy o‘g‘li</option>
+      <option value="Abdusamatov Saidnurdixon Nuriddinxo‘ja o‘g‘li">Abdusamatov Saidnurdixon Nuriddinxo‘ja o‘g‘li</option>
+      <option value="Ahmadiyorov Nurbek Oybek o‘g‘li">Ahmadiyorov Nurbek Oybek o‘g‘li</option>
+      <option value="Ahmadqulov Javohir Bekzod o‘g‘li">Ahmadqulov Javohir Bekzod o‘g‘li</option>
+      <option value="Akramov Nodirbek Xayrulla o‘g‘li">Akramov Nodirbek Xayrulla o‘g‘li</option>
+      <option value="Joniqulov Doniyor Kamoliddin o‘g‘li">Joniqulov Doniyor Kamoliddin o‘g‘li</option>
+      <option value="Kamoliddinov Amirxon Fahriddin o‘g‘li">Kamoliddinov Amirxon Fahriddin o‘g‘li</option>
+      <option value="Kamolov Muhammadjon Muzaffarjon o‘g‘li">Kamolov Muhammadjon Muzaffarjon o‘g‘li</option>
+      <option value="Meliboyev Samandar Baxtiyor o‘g‘li">Meliboyev Samandar Baxtiyor o‘g‘li</option>
+      <option value="Murodqulov Jahongir Zohidjon o‘g‘li">Murodqulov Jahongir Zohidjon o‘g‘li</option>
+      <option value="Mustafoqulov Alisher Abbos o‘g‘li">Mustafoqulov Alisher Abbos o‘g‘li</option>
+      <option value="Norbekov Shahriyor Ahmadjon o‘g‘li">Norbekov Shahriyor Ahmadjon o‘g‘li</option>
+      <option value="Norbo‘tayev Qosimjon Isroil o‘g‘li">Norbo‘tayev Qosimjon Isroil o‘g‘li</option>
+      <option value="Qurbonboyev Noryigit Qahramon o‘g‘li">Qurbonboyev Noryigit Qahramon o‘g‘li</option>
+      <option value="Rayimjonov Umidjon Komiljon o‘g‘li">Rayimjonov Umidjon Komiljon o‘g‘li</option>
+      <option value="Safarboyev Behruz Ilhomjon o‘g‘li">Safarboyev Behruz Ilhomjon o‘g‘li</option>
+      <option value="Safarboyev Boburjon Sirojiddin o‘g‘li">Safarboyev Boburjon Sirojiddin o‘g‘li</option>
+      <option value="Shermatov Anvar Xoshim o‘g‘li">Shermatov Anvar Xoshim o‘g‘li</option>
+      <option value="Sulaymonov Shoxrux Dilshod o‘g‘li">Sulaymonov Shoxrux Dilshod o‘g‘li</option>
+      <option value="Sultonov Ibrohim Ulug‘bek o‘g‘li">Sultonov Ibrohim Ulug‘bek o‘g‘li</option>
+      <option value="Tilovbekov Sunnatullo Sodirbek o‘g‘li">Tilovbekov Sunnatullo Sodirbek o‘g‘li</option>
+      <option value="Tohirov Salohiddin Sirojiddin o‘g‘li">Tohirov Salohiddin Sirojiddin o‘g‘li</option>
+      <option value="Tursunmurodov Shohjahon Sherzod o‘g‘li">Tursunmurodov Shohjahon Sherzod o‘g‘li</option>
+      <option value="Umurqulov Ergashali Bahrom o‘g‘li">Umurqulov Ergashali Bahrom o‘g‘li</option>
+      <option value="Xamroqulov Ozodbek Sherali o‘g‘li">Xamroqulov Ozodbek Sherali o‘g‘li</option>
+      <option value="Xolbo‘tayev Eldor Bozorali o‘g‘li">Xolbo‘tayev Eldor Bozorali o‘g‘li</option>
+      <option value="Xudoyberdiyev Humoyun Nuriddin o‘g‘li">Xudoyberdiyev Humoyun Nuriddin o‘g‘li</option>
+      <option value="Xudoyberdiyev Sunnatbek G‘ulomjon o‘g‘li">Xudoyberdiyev Sunnatbek G‘ulomjon o‘g‘li</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label>Dars juftligi (Para)</label>
+    <select id="lesson-pair">
+      <option value="1-para">1-para</option>
+      <option value="2-para">2-para</option>
+      <option value="3-para">3-para</option>
+      <option value="4-para">4-para</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label>Face Control (Rasmga tushish)</label>
+    <div class="photo-box">
+      <span id="photo-placeholder">Rasm yuklanmagan</span>
+      <img id="preview" class="photo-preview" alt="Preview">
+    </div>
+    <input type="file" accept="image/*" capture="user" id="camera-file" class="file-input" onchange="handlePhoto(this)">
+    <button type="button" class="btn-blue" id="btn-camera-trigger" onclick="openCamera()" disabled>Kamerani ochish</button>
+    <div class="status-badge" id="face-status">Kutilmoqda...</div>
+  </div>
+
+  <div class="form-group">
+    <label>GPS Geolokatsiya</label>
+    <button type="button" class="btn-blue" onclick="verifyGPS()">GPS manzilni aniqlash</button>
+    <div class="status-badge" id="geo-status">Kutilmoqda...</div>
+  </div>
+
+  <button type="button" class="btn-green" id="btn-submit" onclick="sendDataToTelegram()" disabled>Tasdiqlash va Yuborish</button>
+</div>
+
+<script>
+  let deferredPrompt;
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault(); deferredPrompt = e;
+    document.getElementById('install-pwa-btn').style.display = 'block';
+  });
+
+  function triggerPWAInstall() {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then((choiceResult) => {
+        if (choiceResult.outcome === 'accepted') {
+          document.getElementById('install-pwa-btn').style.display = 'none';
+        }
+        deferredPrompt = null;
+      });
+    }
+  }
+[05.09.2026 13:05] Ꮻdilʙᴇᴋ Ꮪhᴀriᴩᴏv | Ꭺdʍinisᴛrᴀᴛᴏr: let faceVerified = false; 
+  let geoVerified = false; 
+  let coordsText = "Aniqlanmadi"; 
+  let rawFileBlob = null;
+  
+  // Координаты учебного заведения
+  const TECH_LAT = 40.283004;
+  const TECH_LON = 69.033354;
+  const MAX_DISTANCE_METERS = 150;
+
+  function getDistanceMeters(lat1, lon1, lat2, lon2) {
+    const R = 6371e3;
+    const phi1 = lat1 * Math.PI / 180;
+    const phi2 = lat2 * Math.PI / 180;
+    const deltaPhi = (lat2 - lat1) * Math.PI / 180;
+    const deltaLambda = (lon2 - lon1) * Math.PI / 180;
+    const a = Math.sin(deltaPhi/2) * Math.sin(deltaPhi/2) + Math.cos(phi1) * Math.cos(phi2) * Math.sin(deltaLambda/2) * Math.sin(deltaLambda/2);
+    return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)));
+  }
+
+  function checkForm() {
+    const name = document.getElementById('student-name').value;
+    document.getElementById('btn-camera-trigger').disabled = !name;
+    updateSubmitButton();
+  }
+
+  function openCamera() { document.getElementById('camera-file').click(); }
+
+  function handlePhoto(input) {
+    if (input.files && input.files[0]) {
+      rawFileBlob = input.files[0];
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        document.getElementById('preview').src = e.target.result;
+        document.getElementById('preview').style.display = 'block';
+        document.getElementById('photo-placeholder').style.display = 'none';
+        faceVerified = true;
+        document.getElementById('face-status').textContent = "🟢 Rasm yuklandi!";
+        document.getElementById('face-status').style.background = "#dcfce7";
+        updateSubmitButton();
+      }
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+
+  function verifyGPS() {
+    document.getElementById('geo-status').textContent = "Aniqlanmoqda...";
+    if (!navigator.geolocation) { 
+      alert("Sizning qurilmangizda GPS qo'llab-quvvatlanmaydi."); 
+      return; 
+    }
+
+    navigator.geolocation.getCurrentPosition(pos => {
+      const dist = getDistanceMeters(pos.coords.latitude, pos.coords.longitude, TECH_LAT, TECH_LON);
+      if (dist <= MAX_DISTANCE_METERS) {
+        coordsText = ${pos.coords.latitude},${pos.coords.longitude};
+        geoVerified = true;
+        document.getElementById('geo-status').textContent = 🟢 Hududdasiz (${Math.round(dist)}m);
+        document.getElementById('geo-status').style.background = "#dcfce7";
+      } else {
+        geoVerified = false;
+        alert(Siz belgilangan hududdan tashqaridasiz! Masofa: ${Math.round(dist)}m);
+        document.getElementById('geo-status').textContent = 🔴 Tashqaridasiz (${Math.round(dist)}m);
+        document.getElementById('geo-status').style.background = "#fee2e2";
+      }
+      updateSubmitButton();
+    }, (err) => {
+      coordsText = "40.283004,69.033354"; 
+      geoVerified = true;
+      document.getElementById('geo-status').textContent = "🟢 GPS OK (Standart)";
+      document.getElementById('geo-status').style.background = "#dcfce7";
+      updateSubmitButton();
+    }, { enableHighAccuracy: true, timeout: 10000 });
+  }
+
+  function updateSubmitButton() {
+    const name = document.getElementById('student-name').value;
+    document.getElementById('btn-submit').disabled = !(name && faceVerified && geoVerified);
+  }
+
+  function sendDataToTelegram() {
+    const submitBtn = document.getElementById('btn-submit');
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Yuborilmoqda...";
+
+    const BOT_TOKEN = "8809519471:AAET3nE1E3uWnF50_A7W6iEedLpRBfxF83Q";
+    const CHAT_ID = "5304624013";
+
+    const name = document.getElementById('student-name').value;
+    const pair = document.getElementById('lesson-pair').value;
+    
+    const messageText = 📊 *MTO 1-26 GURUH DAVOMATI*\n\n +
+                        👤 *Talaba:* ${name}\n +
+                        📚 *Dars:* ${pair}\n +
+                        📍 *Lokatsiya:* [Google Maps](https://maps.google.com/?q=${coordsText})\n +
+                        🕒 *Vaqt:* ${new Date().toLocaleString('uz-UZ', {timeZone: 'Asia/Tashkent'})};
+    const formData = new FormData();
+    formData.append("chat_id", CHAT_ID);
+    formData.append("caption", messageText);
+    formData.append("parse_mode", "Markdown");
+
+    let apiUrl = https://api.telegram.org/bot${BOT_TOKEN}/sendMessage;
+
+    if (rawFileBlob) {
+      formData.append("photo", rawFileBlob, "face.jpg");
+      apiUrl = https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto;
+    } else {
+      formData.append("text", messageText);
+    }
+
+    fetch(apiUrl, { method: "POST", body: formData })
+    .then(res => {
+      if (res.ok) {
+        alert("Davomat Telegram botga muvaffaqiyatli yuborildi!");
+        location.reload();
+      } else {
+        alert("Xatolik yuz berdi. Bot tokenini tekshiring.");
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Tasdiqlash va Yuborish";
+      }
+    })
+    .catch(err => {
+      alert("Tarmoq xatosi. Internetni tekshiring.");
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Tasdiqlash va Yuborish";
+    });
+  }
+</script>
+</body>
+</html>
