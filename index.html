@@ -15,9 +15,10 @@
     .form-group { margin-bottom: 14px; }
     label { display: block; font-size: 13px; font-weight: bold; margin-bottom: 6px; }
     select { width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 15px; background: #fff; }
-    .photo-box { width: 100%; height: 200px; background: #e5e7eb; border: 2px dashed #9ca3af; border-radius: 8px; margin: 10px 0; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; cursor: pointer; }
-    .photo-preview { width: 100%; height: 100%; object-fit: cover; display: none; position: absolute; top: 0; left: 0; }
-    .file-input { display: none; }
+    .photo-box { width: 100%; height: 220px; background: #000; border-radius: 8px; margin: 10px 0; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; cursor: pointer; }
+    .photo-preview { width: 100%; height: 100%; object-fit: cover; display: none; position: absolute; top: 0; left: 0; z-index: 3; }
+    video { width: 100%; height: 100%; object-fit: cover; display: none; position: absolute; top: 0; left: 0; z-index: 2; }
+    .placeholder-text { color: #fff; z-index: 1; text-align: center; padding: 10px; font-size: 14px; }
     button { width: 100%; padding: 12px; border: none; border-radius: 6px; font-size: 15px; font-weight: bold; cursor: pointer; transition: 0.2s; margin-top: 6px; }
     .btn-blue { background: #2563eb; color: #fff; }
     .btn-green { background: #16a34a; color: #fff; }
@@ -77,16 +78,17 @@
     </select>
   </div>
 
-    <div class="form-group">
+  <div class="form-group">
     <label>Face Control (Kameradan rasmga tushish)</label>
-    <div class="photo-box" onclick="document.getElementById('camera-file').click()">
-      <span id="photo-placeholder">📸 Kamerani ochish uchun bosing</span>
+    <div class="photo-box" id="camera-box" onclick="startCamera()">
+      <span class="placeholder-text" id="photo-placeholder">📸 Kamerani yoqish uchun bosing</span>
+      <video id="video" autoplay playsinline></video>
       <img id="preview" class="photo-preview" alt="Preview">
     </div>
-    <input type="file" accept="image/*" capture="user" id="camera-file" class="file-input" onchange="handlePhoto(this)">
+    <canvas id="canvas" style="display:none;"></canvas>
+    <button type="button" class="btn-blue" id="btn-capture" style="display:none;" onclick="takeSnapshot()">📷 Rasmni olish</button>
     <div class="status-badge" id="face-status">Rasm yuklanmagan</div>
   </div>
-
 
   <div class="form-group">
     <label>GPS Geolokatsiya (Texnikum hududi)</label>
@@ -105,33 +107,82 @@
   let geoVerified = false; 
   let coordsText = "40.283016,69.033260"; 
   let rawFileBlob = null;
+  let videoStream = null;
 
-  // Координаты техникума
   const TARGET_LAT = 40.283016;
   const TARGET_LON = 69.033260;
-  const ALLOWED_RADIUS_METERS = 200; // Допустимый радиус в метрах
+  const ALLOWED_RADIUS_METERS = 200; // 200 метр радиус
 
-  function handlePhoto(input) {
-    if (input.files && input.files[0]) {
-      rawFileBlob = input.files[0];
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        const preview = document.getElementById('preview');
-        preview.src = e.target.result;
-        preview.style.display = 'block';
-        document.getElementById('photo-placeholder').style.display = 'none';
-        faceVerified = true;
-        const faceStatus = document.getElementById('face-status');
-        faceStatus.textContent = "🟢 Rasm muvaffaqiyatli olindi!";
-        faceStatus.style.background = "#dcfce7";
-        updateSubmitButton();
-      }
-      reader.readAsDataURL(input.files[0]);
+  function startCamera() {
+    const video = document.getElementById('video');
+    const placeholder = document.getElementById('photo-placeholder');
+    const btnCapture = document.getElementById('btn-capture');
+    const preview = document.getElementById('preview');
+
+    if (rawFileBlob) {
+      preview.style.display = 'none';
+      rawFileBlob = null;
+      faceVerified = false;
+      document.getElementById('face-status').textContent = "Rasm qaytadan olinmoqda...";
+      document.getElementById('face-status').style.background = "#e5e7eb";
+      updateSubmitButton();
     }
+
+    placeholder.style.display = 'block';
+    placeholder.textContent = "Kamera ulanmoqda...";
+
+    navigator.mediaDevices.getUserMedia({ 
+      video: { facingMode: "user" }, 
+      audio: false 
+    })
+    .then(stream => {
+      videoStream = stream;
+      video.srcObject = stream;
+      video.style.display = 'block';
+      placeholder.style.display = 'none';
+      btnCapture.style.display = 'block';
+    })
+    .catch(err => {
+      alert("Kameraga ruxsat berilmadi: " + err.message);
+      placeholder.textContent = "📸 Kamerani yoqish uchun bosing";
+    });
+  }
+
+  function takeSnapshot() {
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const preview = document.getElementById('preview');
+    const btnCapture = document.getElementById('btn-capture');
+    const placeholder = document.getElementById('photo-placeholder');
+
+    canvas.width = video.videoWidth || 640;
+    canvas.height = video.videoHeight || 480;
+    
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+    if (videoStream) {
+      videoStream.getTracks().forEach(track => track.stop());
+    }
+    video.style.display = 'none';
+    btnCapture.style.display = 'none';
+
+    canvas.toBlob(blob => {
+      rawFileBlob = blob;
+      preview.src = URL.createObjectURL(blob);
+      preview.style.display = 'block';
+      placeholder.style.display = 'none';
+      
+      faceVerified = true;
+      const faceStatus = document.getElementById('face-status');
+      faceStatus.textContent = "🟢 Rasm muvaffaqiyatli olindi!";
+      faceStatus.style.background = "#dcfce7";
+      updateSubmitButton();
+    }, 'image/jpeg', 0.85);
   }
 
   function calculateDistance(lat1, lon1, lat2, lon2) {
-    const R = 6371e3; // радиус Земли в метрах
+    const R = 6371e3;
     const φ1 = lat1 * Math.PI/180;
     const φ2 = lat2 * Math.PI/180;
     const Δφ = (lat2-lat1) * Math.PI/180;
@@ -141,8 +192,7 @@
               Math.cos(φ1) * Math.cos(φ2) *
               Math.sin(Δλ/2) * Math.sin(Δλ/2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-
-    return R * c; // расстояние в метрах
+    return R * c;
   }
 
   function verifyGPS() {
@@ -150,7 +200,7 @@
     geoStatus.textContent = "GPS tekshirilmoqda...";
     
     if (!navigator.geolocation) { 
-      alert("Sizning qurilmangiz GPS'ni qo'llab-quvvatlamaydi.");
+      alert("Qurilmangiz GPS'ni qo'llab-quvvatlamaydi.");
       return; 
     }
 
@@ -167,15 +217,15 @@
         geoStatus.style.background = "#dcfce7";
       } else {
         geoVerified = false;
-        geoStatus.textContent = `🔴 Siz texnikum hududida emassiz (${Math.round(distance)}m)`;
+        geoStatus.textContent = `🔴 Hududdan tashqaridasiz (${Math.round(distance)}m)`;
         geoStatus.style.background = "#fee2e2";
-        alert(`Diqqat! Siz texnikum hududidan uzoqdasiz (~${Math.round(distance)} metr). Davomatni faqat техникумdan yuborish mumkin.`);
+        alert(`Diqqat! Siz texnikum hududidan uzoqdasiz (~${Math.round(distance)} metr). Faqat belgilangan hududda ishlash mumkin.`);
       }
       updateSubmitButton();
     }, (err) => {
-      geoStatus.textContent = "🔴 GPS xatosi yoki ruxsat berilmadi";
+      geoStatus.textContent = "🔴 GPS xatosi yoki ruxsat yo'q";
       geoStatus.style.background = "#fee2e2";
-      alert("GPS ma'lumotini olish imkoni bo'lmadi. Geolokatsiya ruxsatini tekshiring.");
+      alert("GPS ma'lumotini olish imkoni bo'lmadi.");
     }, { enableHighAccuracy: true, timeout: 15000 });
   }
 
@@ -225,7 +275,7 @@
     fetch(apiUrl, { method: "POST", body: formData })
     .then(res => {
       if (res.ok) {
-        alert("Davomat Telegram botga muvaffaqiyatli yuborildi!");
+        alert("Davomat Telegram guruhiga muvaffaqiyatli yuborildi!");
         tg.close();
       } else {
         return res.text().then(text => { throw new Error(text); });
@@ -240,4 +290,5 @@
 </script>
 </body>
 </html>
+
 
