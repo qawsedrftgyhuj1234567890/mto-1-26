@@ -77,15 +77,16 @@
     </select>
   </div>
 
-  <div class="form-group">
+    <div class="form-group">
     <label>Face Control (Kameradan rasmga tushish)</label>
     <div class="photo-box" onclick="document.getElementById('camera-file').click()">
       <span id="photo-placeholder">📸 Kamerani ochish uchun bosing</span>
       <img id="preview" class="photo-preview" alt="Preview">
     </div>
-    <input type="file" accept="image/*" capture="environment" id="camera-file" class="file-input" onchange="handlePhoto(this)">
+    <input type="file" accept="image/*" capture="user" id="camera-file" class="file-input" onchange="handlePhoto(this)">
     <div class="status-badge" id="face-status">Rasm yuklanmagan</div>
   </div>
+
 
   <div class="form-group">
     <label>GPS Geolokatsiya (Texnikum hududi)</label>
