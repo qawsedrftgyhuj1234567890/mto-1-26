@@ -3,8 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MTO 1-26 Test Davomat</title>
-  <!-- Telegram Web App API -->
+  <title>MTO 1-26 Davomati</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
     :root { background: var(--tg-theme-bg-color, #f3f4f6); color: var(--tg-theme-text-color, #1f2937); }
@@ -15,7 +14,7 @@
     .group-subtitle { font-size: 13px; text-align: center; color: #6b7280; margin-bottom: 16px; font-weight: bold; }
     .form-group { margin-bottom: 14px; }
     label { display: block; font-size: 13px; font-weight: bold; margin-bottom: 6px; }
-    input[type="text"], select { width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 15px; background: #fff; }
+    select { width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 15px; background: #fff; }
     .photo-box { width: 100%; height: 200px; background: #e5e7eb; border: 2px dashed #9ca3af; border-radius: 8px; margin: 10px 0; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; cursor: pointer; }
     .photo-preview { width: 100%; height: 100%; object-fit: cover; display: none; position: absolute; top: 0; left: 0; }
     .file-input { display: none; }
@@ -29,12 +28,43 @@
 <body>
 
 <div class="app">
-  <h1>Test Davomat (Mini App)</h1>
-  <div class="group-subtitle">Sinov rejimi</div>
+  <h1>1-son Texnikum Davomati</h1>
+  <div class="group-subtitle">Guruh: MTO 1-26</div>
   
   <div class="form-group">
-    <label>F.I.Sh. (Test)</label>
-    <input type="text" id="student-name" value="Sharipov O." readonly>
+    <label>Talaba F.I.Sh.</label>
+    <select id="student-name">
+      <option value="">Talabani tanlang...</option>
+      <option value="Abduqodirov Salmon">Abduqodirov S.</option>
+      <option value="Abdurahmonov Behruzjon">Abdurahmonov B.</option>
+      <option value="Abdusamatov Saidnurdixon">Abdusamatov S.</option>
+      <option value="Ahmadiyorov Nurbek">Ahmadiyorov N.</option>
+      <option value="Ahmadqulov Javohir">Ahmadqulov J.</option>
+      <option value="Akramov Nodirbek">Akramov N.</option>
+      <option value="Joniqulov Doniyor">Joniqulov D.</option>
+      <option value="Kamoliddinov Amirxon">Kamoliddinov A.</option>
+      <option value="Kamolov Muhammadjon">Kamolov M.</option>
+      <option value="Meliboyev Samandar">Meliboyev S.</option>
+      <option value="Murodqulov Jahongir">Murodqulov J.</option>
+      <option value="Mustafoqulov Alisher">Mustafoqulov A.</option>
+      <option value="Norbekov Shahriyor">Norbekov Sh.</option>
+      <option value="Norbo‘tayev Qosimjon">Norbo‘tayev Q.</option>
+      <option value="Qurbonboyev Noryigit">Qurbonboyev N.</option>
+      <option value="Rayimjonov Umidjon">Rayimjonov U.</option>
+      <option value="Safarboyev Behruz">Safarboyev B.</option>
+      <option value="Safarboyev Boburjon">Safarboyev B.</option>
+      <option value="Shermatov Anvar">Shermatov A.</option>
+      <option value="Sulaymonov Shoxrux">Sulaymonov Sh.</option>
+      <option value="Sultonov Ibrohim">Sultonov I.</option>
+      <option value="Tilovbekov Sunnatullo">Tilovbekov S.</option>
+      <option value="Tohirov Salohiddin">Tohirov S.</option>
+      <option value="Tursunmurodov Shohjahon">Tursunmurodov Sh.</option>
+      <option value="Umurqulov Ergashali">Umurqulov E.</option>
+      <option value="Xamroqulov Ozodbek">Xamroqulov O.</option>
+      <option value="Xolbo‘tayev Eldor">Xolbo‘tayev E.</option>
+      <option value="Xudoyberdiyev Humoyun">Xudoyberdiyev H.</option>
+      <option value="Xudoyberdiyev Sunnatbek">Xudoyberdiyev S.</option>
+    </select>
   </div>
 
   <div class="form-group">
@@ -48,33 +78,37 @@
   </div>
 
   <div class="form-group">
-    <label>Face Control (Rasmga tushish)</label>
+    <label>Face Control (Kameradan rasmga tushish)</label>
     <div class="photo-box" onclick="document.getElementById('camera-file').click()">
       <span id="photo-placeholder">📸 Kamerani ochish uchun bosing</span>
       <img id="preview" class="photo-preview" alt="Preview">
     </div>
-    <input type="file" accept="image/*" capture="user" id="camera-file" class="file-input" onchange="handlePhoto(this)">
+    <input type="file" accept="image/*" capture="environment" id="camera-file" class="file-input" onchange="handlePhoto(this)">
     <div class="status-badge" id="face-status">Rasm yuklanmagan</div>
   </div>
 
   <div class="form-group">
-    <label>GPS Geolokatsiya</label>
-    <button type="button" class="btn-blue" onclick="verifyGPS()">📍 GPS manzilni aniqlash</button>
-    <div class="status-badge" id="geo-status">Aniqlanmagan</div>
+    <label>GPS Geolokatsiya (Texnikum hududi)</label>
+    <button type="button" class="btn-blue" onclick="verifyGPS()">📍 GPS manzilni tekshirish</button>
+    <div class="status-badge" id="geo-status">Tekshirilmagan</div>
   </div>
 
   <button type="button" class="btn-green" id="btn-submit" onclick="sendDataToTelegram()" disabled>Tasdiqlash va Yuborish</button>
 </div>
 
 <script>
-  // Инициализация Telegram Web App
   const tg = window.Telegram.WebApp;
   tg.expand();
 
   let faceVerified = false; 
   let geoVerified = false; 
-  let coordsText = "40.283004,69.033354"; 
+  let coordsText = "40.283016,69.033260"; 
   let rawFileBlob = null;
+
+  // Координаты техникума
+  const TARGET_LAT = 40.283016;
+  const TARGET_LON = 69.033260;
+  const ALLOWED_RADIUS_METERS = 200; // Допустимый радиус в метрах
 
   function handlePhoto(input) {
     if (input.files && input.files[0]) {
@@ -87,7 +121,7 @@
         document.getElementById('photo-placeholder').style.display = 'none';
         faceVerified = true;
         const faceStatus = document.getElementById('face-status');
-        faceStatus.textContent = "🟢 Rasm muvaffaqiyatli yuklandi!";
+        faceStatus.textContent = "🟢 Rasm muvaffaqiyatli olindi!";
         faceStatus.style.background = "#dcfce7";
         updateSubmitButton();
       }
@@ -95,44 +129,66 @@
     }
   }
 
+  function calculateDistance(lat1, lon1, lat2, lon2) {
+    const R = 6371e3; // радиус Земли в метрах
+    const φ1 = lat1 * Math.PI/180;
+    const φ2 = lat2 * Math.PI/180;
+    const Δφ = (lat2-lat1) * Math.PI/180;
+    const Δλ = (lon2-lon1) * Math.PI/180;
+
+    const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
+              Math.cos(φ1) * Math.cos(φ2) *
+              Math.sin(Δλ/2) * Math.sin(Δλ/2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+    return R * c; // расстояние в метрах
+  }
+
   function verifyGPS() {
     const geoStatus = document.getElementById('geo-status');
-    geoStatus.textContent = "GPS qidirilmoqda...";
+    geoStatus.textContent = "GPS tekshirilmoqda...";
     
     if (!navigator.geolocation) { 
-      geoVerified = true;
-      geoStatus.textContent = "🟢 GPS tayyor";
-      geoStatus.style.background = "#dcfce7";
-      updateSubmitButton();
+      alert("Sizning qurilmangiz GPS'ni qo'llab-quvvatlamaydi.");
       return; 
     }
 
     navigator.geolocation.getCurrentPosition(pos => {
-      coordsText = `${pos.coords.latitude},${pos.coords.longitude}`;
-      geoVerified = true;
-      geoStatus.textContent = `🟢 Lokatsiya aniqlandi!`;
-      geoStatus.style.background = "#dcfce7";
+      const userLat = pos.coords.latitude;
+      const userLon = pos.coords.longitude;
+      coordsText = `${userLat},${userLon}`;
+
+      const distance = calculateDistance(userLat, userLon, TARGET_LAT, TARGET_LON);
+
+      if (distance <= ALLOWED_RADIUS_METERS) {
+        geoVerified = true;
+        geoStatus.textContent = `🟢 Texnikum hududasidasiz (${Math.round(distance)}m)`;
+        geoStatus.style.background = "#dcfce7";
+      } else {
+        geoVerified = false;
+        geoStatus.textContent = `🔴 Siz texnikum hududida emassiz (${Math.round(distance)}m)`;
+        geoStatus.style.background = "#fee2e2";
+        alert(`Diqqat! Siz texnikum hududidan uzoqdasiz (~${Math.round(distance)} metr). Davomatni faqat техникумdan yuborish mumkin.`);
+      }
       updateSubmitButton();
     }, (err) => {
-      geoVerified = true;
-      geoStatus.textContent = "🟢 GPS tayyor (Avtomatik)";
-      geoStatus.style.background = "#dcfce7";
-      updateSubmitButton();
-    }, { enableHighAccuracy: true, timeout: 10000 });
+      geoStatus.textContent = "🔴 GPS xatosi yoki ruxsat berilmadi";
+      geoStatus.style.background = "#fee2e2";
+      alert("GPS ma'lumotini olish imkoni bo'lmadi. Geolokatsiya ruxsatini tekshiring.");
+    }, { enableHighAccuracy: true, timeout: 15000 });
   }
 
   function updateSubmitButton() {
+    const name = document.getElementById('student-name').value;
     const submitBtn = document.getElementById('btn-submit');
-    // Так как имя уже заполнено, проверяем только фото и GPS
-    if (faceVerified && geoVerified) {
+    if (name && faceVerified && geoVerified) {
       submitBtn.disabled = false;
     } else {
       submitBtn.disabled = true;
     }
   }
 
-  // При загрузке сразу проверяем кнопку (если вдруг сбросилась)
-  updateSubmitButton();
+  document.getElementById('student-name').addEventListener('change', updateSubmitButton);
 
   function sendDataToTelegram() {
     const submitBtn = document.getElementById('btn-submit');
@@ -145,8 +201,8 @@
     const name = document.getElementById('student-name').value;
     const pair = document.getElementById('lesson-pair').value;
     
-    const messageText = `🧪 *TEST DAVOMAT (MINI APP)*\n\n` +
-                        `👤 *F.I.Sh.:* ${name}\n` +
+    const messageText = `📊 *MTO 1-26 GURUH DAVOMATI*\n\n` +
+                        `👤 *Talaba:* ${name}\n` +
                         `📚 *Dars:* ${pair}\n` +
                         `📍 *Lokatsiya:* [Google Maps](https://maps.google.com/?q=${coordsText})\n` +
                         `🕒 *Vaqt:* ${new Date().toLocaleString('uz-UZ', {timeZone: 'Asia/Tashkent'})}`;
@@ -159,7 +215,7 @@
     let apiUrl = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
 
     if (rawFileBlob) {
-      formData.append("photo", rawFileBlob, "test.jpg");
+      formData.append("photo", rawFileBlob, "face.jpg");
       apiUrl = `https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`;
     } else {
       formData.append("text", messageText);
@@ -168,16 +224,14 @@
     fetch(apiUrl, { method: "POST", body: formData })
     .then(res => {
       if (res.ok) {
-        alert("Test xabar muvaffaqiyatli yuborildi!");
+        alert("Davomat Telegram botga muvaffaqiyatli yuborildi!");
         tg.close();
       } else {
-        alert("Xatolik yuz berdi. Internetni tekshiring.");
-        submitBtn.disabled = false;
-        submitBtn.textContent = "Tasdiqlash va Yuborish";
+        return res.text().then(text => { throw new Error(text); });
       }
     })
     .catch(err => {
-      alert("Tarmoq xatosi.");
+      alert("Yuborishda xatolik yuz berdi. Internetni tekshiring.");
       submitBtn.disabled = false;
       submitBtn.textContent = "Tasdiqlash va Yuborish";
     });
@@ -185,3 +239,4 @@
 </script>
 </body>
 </html>
+
