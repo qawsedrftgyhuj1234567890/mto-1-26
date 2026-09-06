@@ -78,20 +78,21 @@
     </select>
   </div>
 
-  <div class="form-group">
+    <div class="form-group">
     <label>Face Control (Kameradan rasmga tushish)</label>
     
-    <!-- Клик по блоку открывает камеру -->
-    <div class="photo-box" onclick="document.getElementById('camera-file').click()">
+    <!-- Кликабельная область-превью -->
+    <div class="photo-box" onclick="document.getElementById('camera-file').click()" style="cursor: pointer;">
       <span class="placeholder-text" id="photo-placeholder">📸 Kamerani ochish uchun shu yerga bosing</span>
       <img id="preview" class="photo-preview" alt="Preview">
     </div>
 
-    <!-- Системный инпут для прямого вызова камеры -->
-    <input type="file" accept="image/*" capture="user" id="camera-file" class="file-input" onchange="handlePhoto(this)">
+    <!-- Системный инпут с принудительным вызовом камеры -->
+    <input type="file" accept="image/*" capture="environment" id="camera-file" class="file-input" onchange="handlePhoto(this)" style="display:none;">
     
     <div class="status-badge" id="face-status">Rasm yuklanmagan</div>
   </div>
+
 
   <div class="form-group">
     <label>GPS Geolokatsiya (Texnikum hududi)</label>
