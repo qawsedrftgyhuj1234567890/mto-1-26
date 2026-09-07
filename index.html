@@ -191,7 +191,7 @@
 
   document.getElementById('student-name').addEventListener('change', updateSubmitButton);
 
-  function sendDataToTelegram() {
+function sendDataToTelegram() {
     const submitBtn = document.getElementById('btn-submit');
     submitBtn.disabled = true;
     submitBtn.textContent = "Yuborilmoqda...";
@@ -211,6 +211,7 @@
     const formData = new FormData();
     formData.append("chat_id", CHAT_ID);
     formData.append("parse_mode", "Markdown");
+    formData.append("caption", messageText); // Matnni rasm ostiga yozish uchun
 
     let apiUrl = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
 
