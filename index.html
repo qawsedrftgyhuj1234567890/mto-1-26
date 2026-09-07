@@ -28,7 +28,7 @@
     .btn-blue:active { background: #1d4ed8; }
     .btn-green { background: #16a34a; color: #fff; }
     .btn-green:active { background: #15803d; }
-    .btn-install { background: #7c3aed; color: #fff; display: none; margin-bottom: 15px; }
+    .btn-install { background: #7c3aed; color: #fff; margin-bottom: 15px; display: block; }
     .btn-install:active { background: #6d28d9; }
     button:disabled { background: #4b5563; color: #9ca3af; cursor: not-allowed; opacity: 0.7; }
     .status-badge { font-size: 12px; padding: 8px; border-radius: 6px; background: #374151; text-align: center; margin-top: 6px; font-weight: bold; color: #e5e7eb; }
@@ -37,7 +37,6 @@
 <body>
 
 <div class="app">
-  <!-- Telefon ekraniga o'rnatish tugmasi -->
   <button type="button" id="btn-install" class="btn-install" onclick="installApp()">📲 Telefon ekraniga o'rnatish</button>
 
   <h1>1-son Texnikum Davomati</h1>
@@ -110,12 +109,10 @@
 
 <script>
   let deferredPrompt;
-  const installBtn = document.getElementById('btn-install');
 
   window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
-    installBtn.style.display = 'block';
   });
 
   function installApp() {
@@ -126,8 +123,9 @@
           console.log('Foydalanuvchi ilovani o\'rnatdi');
         }
         deferredPrompt = null;
-        installBtn.style.display = 'none';
       });
+    } else {
+      alert("Ilovani o'rnatish uchun brauzer menyusidan (⋮) 'Asosiy ekranga qo'shish' yoki 'Установить приложение' tugmasini tanlang.");
     }
   }
 
