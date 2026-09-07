@@ -196,8 +196,9 @@
     submitBtn.disabled = true;
     submitBtn.textContent = "Yuborilmoqda...";
 
-    const BOT_TOKEN = "8809519471:AAET3nE1E3uWnF50_A7W6iEedLpRBfxF83Q";
-    const CHAT_ID = "5304624013";
+    // ⚠️ YANGI BOT TOKEN VA CHAT ID SHU YERGA YOZILADI:
+    const BOT_TOKEN = "8776881005:AAHLW35x912tU0dI3sgql4IMB1OIBRJzC88";
+    const CHAT_ID = "1003956011370";
 
     const name = document.getElementById('student-name').value;
     const pair = document.getElementById('lesson-pair').value;
@@ -210,7 +211,6 @@
 
     const formData = new FormData();
     formData.append("chat_id", CHAT_ID);
-    formData.append("caption", messageText);
     formData.append("parse_mode", "Markdown");
 
     let apiUrl = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
@@ -218,19 +218,23 @@
     if (rawFileBlob) {
       formData.append("photo", rawFileBlob, "face.jpg");
       apiUrl = `https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`;
+    } else {
+      formData.append("text", messageText);
     }
 
     fetch(apiUrl, { method: "POST", body: formData })
-    .then(res => {
-      if (res.ok) {
+    .then(async res => {
+      const data = await res.json();
+      if (res.ok && data.ok) {
         alert("Davomat Telegram guruhiga muvaffaqiyatli yuborildi!");
         location.reload();
       } else {
-        return res.text().then(text => { throw new Error(text); });
+        throw new Error(data.description || "Noma'lum Telegram xatosi");
       }
     })
     .catch(err => {
-      alert("Yuborishda xatolik yuz berdi. Internetni tekshiring.");
+      console.error(err);
+      alert("Xatolik: " + err.message);
       submitBtn.disabled = false;
       submitBtn.textContent = "Tasdiqlash va Yuborish";
     });
