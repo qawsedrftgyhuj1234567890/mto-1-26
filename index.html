@@ -6,6 +6,7 @@
   <title>MTO 1-26 Davomati</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <link rel="manifest" href="manifest.json">
   <style>
     :root { background: #111827; color: #f3f4f6; }
@@ -109,10 +110,23 @@
 
 <script>
   let deferredPrompt;
+  const installBtn = document.getElementById('btn-install');
+
+  // Agar ilova allaqachon o'rnatilgan bo'lib, ilova ichidan ochilgan bo'lsa - tugmani darhol yashiramiz
+  if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
+    installBtn.style.display = 'none';
+  }
 
   window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
+  });
+
+  // Ilova muvaffaqiyatli o'rnatilgandan so'ng ishga tushadigan hodisa
+  window.addEventListener('appinstalled', (evt) => {
+    installBtn.style.display = 'none';
+    deferredPrompt = null;
+    console.log('Ilova muvaffaqiyatli o\'rnatildi va tugma yashirildi');
   });
 
   function installApp() {
@@ -120,12 +134,12 @@
       deferredPrompt.prompt();
       deferredPrompt.userChoice.then((choiceResult) => {
         if (choiceResult.outcome === 'accepted') {
-          console.log('Foydalanuvchi ilovani o\'rnatdi');
+          installBtn.style.display = 'none';
         }
         deferredPrompt = null;
       });
     } else {
-      alert("Ilovani o'rnatish uchun brauzer menyusidan (⋮) 'Asosiy ekranga qo'shish' yoki 'Установить приложение' tugmasini tanlang.");
+      alert("Ilovani o'rnatish uchun:\n1. Brauzer menyusini (⋮) bosing.\n2. 'Asosiy ekranga qo'shish' yoki 'Установить приложение' tugmasini tanlang.");
     }
   }
 
@@ -260,7 +274,7 @@
     })
     .catch(err => {
       console.error(err);
-      alert("Telegram xatosi: " + err.message);
+      alert("Yuborishda xatolik yuz berdi: " + err.message);
       submitBtn.disabled = false;
       submitBtn.textContent = "Tasdiqlash va Yuborish";
     });
