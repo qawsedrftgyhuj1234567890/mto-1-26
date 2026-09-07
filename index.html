@@ -196,9 +196,8 @@
     submitBtn.disabled = true;
     submitBtn.textContent = "Yuborilmoqda...";
 
-    // ⚠️ YANGI BOT TOKEN VA CHAT ID SHU YERGA YOZILADI:
     const BOT_TOKEN = "8776881005:AAHLW35x912tU0dI3sgql4IMB1OIBRJzC88";
-    const CHAT_ID = "1003956011370";
+    const CHAT_ID = "-1003956011370";
 
     const name = document.getElementById('student-name').value;
     const pair = document.getElementById('lesson-pair').value;
@@ -229,12 +228,12 @@
         alert("Davomat Telegram guruhiga muvaffaqiyatli yuborildi!");
         location.reload();
       } else {
-        throw new Error(data.description || "Noma'lum Telegram xatosi");
+        throw new Error(data.description || "Noma'lum xatolik");
       }
     })
     .catch(err => {
       console.error(err);
-      alert("Xatolik: " + err.message);
+      alert("Telegram xatosi: " + err.message);
       submitBtn.disabled = false;
       submitBtn.textContent = "Tasdiqlash va Yuborish";
     });
