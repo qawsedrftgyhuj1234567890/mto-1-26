@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>MTO 1-26 Davomati</title>
-  <!-- PWA настройки для телефона -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
   <style>
@@ -18,7 +17,6 @@
     label { display: block; font-size: 13px; font-weight: bold; margin-bottom: 6px; color: #e5e7eb; }
     select { width: 100%; padding: 14px; border: 1px solid #4b5563; border-radius: 8px; font-size: 16px; background: #374151; color: #fff; outline: none; }
     
-    /* Блок камеры */
     .photo-box { width: 100%; height: 220px; background: #374151; border: 2px dashed #6b7280; border-radius: 10px; margin: 10px 0; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; cursor: pointer; }
     .photo-preview { width: 100%; height: 100%; object-fit: cover; display: none; position: absolute; top: 0; left: 0; z-index: 2; }
     .placeholder-text { color: #d1d5db; z-index: 1; text-align: center; padding: 10px; font-size: 14px; font-weight: bold; }
@@ -37,7 +35,7 @@
 
 <div class="app">
   <h1>1-son Texnikum Davomati</h1>
-  <div class="group-subtitle">Guruh: MTO 1-26 (PWA Rejimi)</div>
+  <div class="group-subtitle">Guruh: MTO 1-26</div>
   
   <div class="form-group">
     <label>Talaba F.I.Sh.</label>
@@ -87,16 +85,11 @@
 
   <div class="form-group">
     <label>Face Control (Kameradan rasmga tushish)</label>
-    
-    <!-- Клик открывает системное меню камеры телефона -->
     <div class="photo-box" onclick="document.getElementById('camera-file').click()">
       <span class="placeholder-text" id="photo-placeholder">📸 Kamerani ochish uchun bosing</span>
       <img id="preview" class="photo-preview" alt="Preview">
     </div>
-
-    <!-- Инпут для вызова камеры в браузере -->
     <input type="file" accept="image/*" capture="environment" id="camera-file" class="file-input" onchange="handlePhoto(this)">
-    
     <div class="status-badge" id="face-status">Rasm yuklanmagan</div>
   </div>
 
@@ -117,7 +110,7 @@
 
   const TARGET_LAT = 40.283016;
   const TARGET_LON = 69.033260;
-  const ALLOWED_RADIUS_METERS = 200; // 200 метр радиус
+  const ALLOWED_RADIUS_METERS = 200;
 
   function handlePhoto(input) {
     if (input.files && input.files[0]) {
@@ -160,22 +153,23 @@
       alert("Qurilmangiz GPS'ni qo'llab-quvvatlamaydi.");
       return; 
     }
-navigator.geolocation.getCurrentPosition(pos => {
+
+    navigator.geolocation.getCurrentPosition(pos => {
       const userLat = pos.coords.latitude;
       const userLon = pos.coords.longitude;
-      coordsText = ${userLat},${userLon};
+      coordsText = `${userLat},${userLon}`;
 
       const distance = calculateDistance(userLat, userLon, TARGET_LAT, TARGET_LON);
 
       if (distance <= ALLOWED_RADIUS_METERS) {
         geoVerified = true;
-        geoStatus.textContent = 🟢 Texnikum hududasidasiz (${Math.round(distance)}m);
+        geoStatus.textContent = `🟢 Texnikum hududasidasiz (${Math.round(distance)}m)`;
         geoStatus.style.background = "#065f46";
       } else {
         geoVerified = false;
-        geoStatus.textContent = 🔴 Hududdan tashqaridasiz (${Math.round(distance)}m);
+        geoStatus.textContent = `🔴 Hududdan tashqaridasiz (${Math.round(distance)}m)`;
         geoStatus.style.background = "#7f1d1d";
-        alert(Diqqat! Siz texnikum hududidan uzoqdasiz (~${Math.round(distance)} metr). Faqat belgilangan hududda ishlash mumkin.);
+        alert(`Diqqat! Siz texnikum hududidan uzoqdasiz (~${Math.round(distance)} metr). Faqat belgilangan hududda ishlash mumkin.`);
       }
       updateSubmitButton();
     }, (err) => {
@@ -208,31 +202,29 @@ navigator.geolocation.getCurrentPosition(pos => {
     const name = document.getElementById('student-name').value;
     const pair = document.getElementById('lesson-pair').value;
     
-    const messageText = 📊 *MTO 1-26 GURUH DAVOMATI (PWA)*\n\n +
-                        👤 *Talaba:* ${name}\n +
-                        📚 *Dars:* ${pair}\n +
-                        📍 *Lokatsiya:* [Google Maps](https://maps.google.com/?q=${coordsText})\n +
-                        🕒 *Vaqt:* ${new Date().toLocaleString('uz-UZ', {timeZone: 'Asia/Tashkent'})};
+    const messageText = `📊 *MTO 1-26 GURUH DAVOMATI*\n\n` +
+                        `👤 *Talaba:* ${name}\n` +
+                        `📚 *Dars:* ${pair}\n` +
+                        `📍 *Lokatsiya:* [Google Maps](https://maps.google.com/?q=${coordsText})\n` +
+                        `🕒 *Vaqt:* ${new Date().toLocaleString('uz-UZ', {timeZone: 'Asia/Tashkent'})}`;
 
     const formData = new FormData();
     formData.append("chat_id", CHAT_ID);
     formData.append("caption", messageText);
     formData.append("parse_mode", "Markdown");
 
-    let apiUrl = https://api.telegram.org/bot${BOT_TOKEN}/sendMessage;
+    let apiUrl = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
 
     if (rawFileBlob) {
       formData.append("photo", rawFileBlob, "face.jpg");
-      apiUrl = https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto;
-    } else {
-      formData.append("text", messageText);
+      apiUrl = `https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`;
     }
 
     fetch(apiUrl, { method: "POST", body: formData })
     .then(res => {
       if (res.ok) {
         alert("Davomat Telegram guruhiga muvaffaqiyatli yuborildi!");
-        location.reload(); // Страницани янгилаш
+        location.reload();
       } else {
         return res.text().then(text => { throw new Error(text); });
       }
